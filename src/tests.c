@@ -16,7 +16,7 @@ int main() {
   srunner_add_suite(sr, suite_transpose());
   srunner_add_suite(sr, suite_determimant());
   srunner_add_suite(sr, suite_calc_complements());
-
+  srunner_add_suite(sr, suite_inverse_matrix());
   srunner_set_fork_status(sr, CK_NOFORK);
   srunner_run_all(sr, CK_NORMAL);
 

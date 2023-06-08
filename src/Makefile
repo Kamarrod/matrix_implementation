@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -std=c11
 # ADD_FLAGS = -lrt -lpthread -lm -lsubunit
-TESTS=t_eq_matrix.c t_create_matrix.c t_sum.c t_sub.c t_mult_number.c t_mult_matrix.c t_transpose.c t_determinant.c
+TESTS=t_eq_matrix.c t_create_matrix.c t_sum.c t_sub.c t_mult_number.c t_mult_matrix.c t_transpose.c t_determinant.c t_calc_complements.c t_inverse.c
 
 LIBS = -lm -lsubunit
 TST_LIBS = $(shell pkg-config --libs check)
@@ -33,6 +33,9 @@ clang:
 	cp ../materials/linters/.clang-format .
 	clang-format -i *.c *.h
 
+
+valgrind:
+	valgrind --leak-check=full -s ./test
 
 clean:
 	rm -rf *.o

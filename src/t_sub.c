@@ -108,6 +108,8 @@ START_TEST(sub_5) {
   int res = s21_sub_matrix(&A, &B, &result);
   ck_assert_int_eq(res, 0);
   s21_remove_matrix(&A);
+  s21_remove_matrix(&B);
+  s21_remove_matrix(&result);
 }
 END_TEST
 

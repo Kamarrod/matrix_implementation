@@ -252,16 +252,17 @@ double s21_get_minor(int row, int column, matrix_t *A) {
   for (int i = 0; i < A->rows; i++) {
     minor_column = 0;
     for (int j = 0; j < A->columns; j++) {
-      if (j != column) {
-        minor_column++;
+      if (j != column && i != row) {
         temp.matrix[minor_row][minor_column] = A->matrix[i][j];
+        minor_column++;
       }
     }
     if (i != row)
       minor_row++;
   }
 
-  double res = s21_determinant(&temp);
+  double res;
+  s21_determinant(&temp, &res);
   s21_remove_matrix(&temp);
   return res;
 }
@@ -273,10 +274,35 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
       int sign = 1;
       s21_create_matrix(A->rows, A->columns, result);
       for (int i = 0; i < A->rows; i++)
-        for (int j = 0; j < A->rows; j++) {
+        for (int j = 0; j < A->columns; j++) {
           sign = (i + j + 2) % 2 == 0 ? 1 : -1;
           result->matrix[i][j] = sign * s21_get_minor(i, j, A);
         }
+    } else {
+      res = 2;
+    }
+  } else {
+    res = 1;
+  }
+  return res;
+}
+
+
+int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
+  int res = 0;
+  if (s21_is_empty(A) == 0) {
+    double det = 0.0;
+    if ((A->columns == A->rows) && (s21_determinant(A, &det) == 0) && (det != 0)) {
+      s21_create_matrix(A->rows, A->columns, result);
+      matrix_t minors = {0};
+      s21_create_matrix(A->rows, A->columns, &minors);
+      s21_calc_complements(A, &minors);
+      matrix_t minors_transp = {0};
+      s21_create_matrix(A->rows, A->columns, &minors_transp);
+      s21_transpose(&minors, &minors_transp);
+      s21_mult_number(&minors_transp, 1 / det, result);
+      s21_remove_matrix(&minors_transp);
+      s21_remove_matrix(&minors);
     } else {
       res = 2;
     }
