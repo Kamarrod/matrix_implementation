@@ -1,5 +1,5 @@
 #include "tests.h"
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 
 START_TEST(transpose_1) {
   int rows = 1, columns = 1;

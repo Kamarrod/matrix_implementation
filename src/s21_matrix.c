@@ -37,17 +37,18 @@ int s21_is_empty(matrix_t * matrix) {
 
 int s21_create_matrix(int rows, int columns, matrix_t *result) {
   int res = 0;
+  // printf("B\n");
   if (rows < 1 || columns < 1) {
     res = 1;
   } else {
     result->rows = rows;
     result->columns = columns;
-    result->matrix = (double **)calloc(rows, sizeof(double *));
+    result->matrix = (double **)malloc(rows * sizeof(double *));
     res = 0;
   }
   if (result->matrix != NULL) {
     for (int i = 0; i < rows; i++) {
-      result->matrix[i] = (double *)calloc(columns, sizeof(double));
+      result->matrix[i] = (double *)malloc(columns * sizeof(double));
       if (!result->matrix[i]) {
         for (int j = 0; j < i; j++) free(result->matrix[j]);
         free(result->matrix);
@@ -247,7 +248,7 @@ double s21_get_determinant(matrix_t *A) {
 
 double s21_get_minor(int row, int column, matrix_t *A) {
   matrix_t temp = {0};
-  s21_create_matrix(A->rows- 1, A->columns -1, &temp);
+  s21_create_matrix(A->rows - 1, A->columns- 1, &temp);
   int minor_row = 0, minor_column = 0;
   for (int i = 0; i < A->rows; i++) {
     minor_column = 0;
@@ -272,6 +273,9 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
   if (s21_is_empty(A) == 0) {
     if (A->columns == A->rows) {
       int sign = 1;
+      // if (result->matrix != NULL) {
+      //   s21_remove_matrix(result);
+      // }
       s21_create_matrix(A->rows, A->columns, result);
       for (int i = 0; i < A->rows; i++)
         for (int j = 0; j < A->columns; j++) {
@@ -295,7 +299,7 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
     if ((A->columns == A->rows) && (s21_determinant(A, &det) == 0) && (det != 0)) {
       s21_create_matrix(A->rows, A->columns, result);
       matrix_t minors = {0};
-      s21_create_matrix(A->rows, A->columns, &minors);
+      // s21_create_matrix(A->rows, A->columns, &minors);
       s21_calc_complements(A, &minors);
       matrix_t minors_transp = {0};
       s21_create_matrix(A->rows, A->columns, &minors_transp);

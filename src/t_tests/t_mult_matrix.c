@@ -1,5 +1,5 @@
 #include "tests.h"
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 
 START_TEST(mult_matrix_1) {
   int rows = 3, columns = 2;

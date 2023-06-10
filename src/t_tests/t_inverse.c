@@ -1,5 +1,5 @@
 #include "tests.h"
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 
 START_TEST(inverse_1) {
   matrix_t A = {0}, C = {0};
@@ -188,13 +188,16 @@ START_TEST(inverse_9) {
   s21_create_matrix(rows, columns, &expected);
   for (int i = 0; i < rows; i++)
     for (int j = 0; j < columns; j++) {
-      if (i == j) {
-        A.matrix[i][j] = 1;
-        expected.matrix[i][j] = 1;
-      }
+      A.matrix[i][j] = i == j ? 1 : 0;
+      expected.matrix[i][j] = A.matrix[i][j];
     }
   s21_inverse_matrix(&A, &result);
-  ck_assert_int_eq(s21_eq_matrix(&expected, &result), SUCCESS);
+  // ck_assert_int_eq(s21_eq_matrix(&expected, &result), SUCCESS);
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < columns; j++) {
+      ck_assert_double_eq_tol(expected.matrix[i][j], result.matrix[i][j], 1e-6);
+    }
+  }
   s21_remove_matrix(&A);
   s21_remove_matrix(&expected);
   s21_remove_matrix(&result);

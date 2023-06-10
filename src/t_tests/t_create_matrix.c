@@ -1,5 +1,5 @@
 #include "tests.h"
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 
 START_TEST(matrix_create_1) {
   matrix_t A = {0};

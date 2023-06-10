@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #define SUCCESS 1
 #define FAILURE 0
 

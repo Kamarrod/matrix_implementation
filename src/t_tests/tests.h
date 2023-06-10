@@ -2,7 +2,7 @@
 #define S21_TESTS_H
 
 #include "check.h"
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 
 Suite *suite_eq_matrix(void);
 Suite *suite_create_matrix(void);
