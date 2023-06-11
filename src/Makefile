@@ -30,6 +30,15 @@ test: s21_matrix.a
 	rm -rf *.o
 	./test
 
+gcov_report:
+	$(CC) $(TESTS) s21_matrix.c t_tests/tests.c -o gcov_check.out $(TST_LIBS) -lcheck --coverage
+	./gcov_check.out
+	lcov -t "gcheck" -o gcheck.info -c -d . 
+	genhtml -o report gcheck.info
+	open ./report/index.html
+	rm -rf *.gcda *.gcno *.gcov
+
+
 clang:
 	cp ../materials/linters/.clang-format .
 	clang-format -i *.c *.h
