@@ -11,33 +11,8 @@ int s21_is_empty(matrix_t * matrix) {
   return res;
 }
 
-
-// int s21_create_matrix(int rows, int columns, matrix_t *result) {
-//     int res = 1;
-//     if (rows > 0 && columns > 0) {
-//         result->rows = rows;
-//         result->columns = columns;
-//         double **temp = malloc(rows * columns * sizeof(double) + rows * sizeof(double*));
-//         if (temp) {
-//           double *ptr = (double*) (temp + columns);
-//           for (int i = 0; i < columns; i++) {
-//             temp[i] = ptr + rows * i;
-//           }
-//             if (ptr) {
-//               res = 0;
-//               result->matrix = temp;
-//             } else {
-//               free (temp);
-//               res = 1;
-//             }
-//         }
-//     }
-//     return res;
-// }
-
 int s21_create_matrix(int rows, int columns, matrix_t *result) {
   int res = 0;
-  // printf("B\n");
   if (rows < 1 || columns < 1) {
     res = 1;
   } else {
@@ -59,14 +34,6 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
   return res;
 }
 
-
-// void s21_remove_matrix(matrix_t *A) {
-//   if (A->matrix != NULL) {
-//     free(A->matrix);
-//     A->columns = 0;
-//     A->rows = 0;
-//   }
-// }
 
 void s21_remove_matrix(matrix_t *A) {
   if (A->matrix != NULL) {
@@ -138,10 +105,7 @@ int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
 int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
   int res = 0;
   if (s21_is_empty(A) == 0) {
-    if (result->matrix != NULL) {
-      s21_remove_matrix(result);
-    }
-      res = s21_create_matrix(A->rows, A->columns, result);
+    res = s21_create_matrix(A->rows, A->columns, result);
       for (int i = 0; i < A->rows; i++) {
         for (int j = 0; j < A->columns; j++)
           result->matrix[i][j] = A->matrix[i][j] * number;
@@ -179,9 +143,6 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
 int s21_transpose(matrix_t *A, matrix_t *result) {
   int res = 0;
   if (s21_is_empty(A) == 0) {
-    if (result->matrix != NULL) {
-      s21_remove_matrix(result);
-    }
       res = s21_create_matrix(A->columns, A->rows, result);
       for (int i = 0; i < A->rows; i++) {
         for (int j = 0; j < A->columns; j++)
@@ -297,12 +258,11 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
   if (s21_is_empty(A) == 0) {
     double det = 0.0;
     if ((A->columns == A->rows) && (s21_determinant(A, &det) == 0) && (det != 0)) {
-      s21_create_matrix(A->rows, A->columns, result);
+      // s21_create_matrix(A->rows, A->columns, result);
       matrix_t minors = {0};
-      // s21_create_matrix(A->rows, A->columns, &minors);
       s21_calc_complements(A, &minors);
       matrix_t minors_transp = {0};
-      s21_create_matrix(A->rows, A->columns, &minors_transp);
+      // s21_create_matrix(A->rows, A->columns, &minors_transp);
       s21_transpose(&minors, &minors_transp);
       s21_mult_number(&minors_transp, 1 / det, result);
       s21_remove_matrix(&minors_transp);
